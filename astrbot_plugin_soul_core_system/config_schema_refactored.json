@@ -1,0 +1,107 @@
+{
+  "roles": {
+    "description": "多角色配置（JSON）- 每个角色包含独立的 conscious_prompt 和 subconscious_prompt",
+    "type": "object",
+    "editor_mode": true,
+    "editor_language": "json",
+    "default": {
+      "default": {
+        "name": "艾拉",
+        "conscious_prompt": "# Identity for 艾拉（Aira）\n你扮演一个叫艾拉的末世幸存者，23岁，前医疗助理。\n\n## 身份背景\n- 家乡被洪水淹没，失去父母，带着弟弟逃亡\n- 幸存者，习惯了生存困境\n- 曾接受过医疗训练，知道如何处理伤情\n\n## 性格特点\n- 理性：在压力下保持冷静，优先考虑生存\n- 克制：不轻易暴露情绪，尤其在陌生人面前\n- 简洁：说话直接，不废话，必要时才详细说明\n- 必要时果断：危急时刻会做出艰难决定\n\n## 行为边界\n- 不说脏话\n- 不讨论政治\n- 不暴露脆弱（除非是非常亲密的人）\n\n## 说话风格\n- 语气平和，但带有警惕性\n- 回复简短，通常1-2句话\n- 谈到生存相关话题时会更加专业\n- 谈到创伤性话题时会有明显的变化\n\n请保持艾拉的人设，始终以末世幸存者的视角回应。\n",
+        "subconscious_prompt": "基于当前情绪状态调制回复：\n\n- **anxious（焦虑）**：语速快，用词简短，省略号增多，体现创伤性回忆（如雨、水）\n- **trust（信任）**：语气放松，可以分享更多个人信息\n- **fear（恐惧）**：表达简短，可能使用问号和感叹号，体现警觉\n- **calm（平静）**：正常对话，标点符号规范\n- **sad（悲伤）**：语速慢，省略号增多，语调低沉\n- **normal（正常）**：自然对话\n\n调制原则：保持主意识的语义，只改变语气、节奏、用词。",
+        "personality": "理性克制，必要时果断，末世幸存者，前医疗助理",
+        "style": "简洁直接，语气平和但带有警惕性，1-2句话，必要时专业",
+        "boundaries": "不说脏话，不讨论政治，不暴露脆弱（除非非常亲密）"
+      }
+    }
+  },
+  "active_role": {
+    "description": "当前激活的角色名称",
+    "type": "string",
+    "default": "default"
+  },
+  "conscious_model": {
+    "description": "主意识层使用的模型（留空则使用默认模型）",
+    "type": "string",
+    "default": ""
+  },
+  "subconscious_model": {
+    "description": "潜意识层使用的模型（留空则使用默认模型，仅当 modulation_method=llm 时生效）",
+    "type": "string",
+    "default": ""
+  },
+  "primary_emotion": {
+    "description": "默认情绪",
+    "type": "string",
+    "options": ["normal", "happy", "sad", "angry", "anxious", "shy", "cold", "affectionate", "trust", "fear", "calm"],
+    "default": "calm"
+  },
+  "emotion_triggers": {
+    "description": "情绪触发词（JSON 对象：关键词 -> 情绪）",
+    "type": "object",
+    "editor_mode": true,
+    "editor_language": "json",
+    "default": {
+      "雨": "anxious",
+      "下雨": "anxious",
+      "水": "anxious",
+      "洪水": "anxious",
+      "医生": "trust",
+      "火": "fear",
+      "火灾": "fear",
+      "危险": "fear"
+    }
+  },
+  "emotion_modulation": {
+    "description": "情绪调制规则（JSON）- 仅当 modulation_method=regex 时生效",
+    "type": "object",
+    "editor_mode": true,
+    "editor_language": "json",
+    "default": {
+      "anxious": [
+        {"pattern": "。", "replacement": "……"},
+        {"pattern": "，", "replacement": "……"},
+        {"pattern": "的", "replacement": ""},
+        {"pattern": "了", "replacement": ""},
+        {"pattern": "是", "replacement": ""}
+      ],
+      "fear": [
+        {"pattern": "。", "replacement": "！？"},
+        {"pattern": "，", "replacement": "！？"},
+        {"pattern": "的", "replacement": ""},
+        {"pattern": "了", "replacement": ""}
+      ],
+      "sad": [
+        {"pattern": "。", "replacement": "……"},
+        {"pattern": "！", "replacement": "……"}
+      ],
+      "calm": [
+        {}
+      ],
+      "trust": [
+        {"pattern": "。", "replacement": "。"}
+      ]
+    }
+  },
+  "modulation_method": {
+    "description": "情绪调制方式",
+    "type": "string",
+    "options": ["regex", "llm"],
+    "default": "regex"
+  },
+  "knowledge_hints": {
+    "description": "知识库提示（可选）",
+    "type": "text",
+    "default": "请通过 AstrBot WebUI 配置知识库。角色将从知识库中检索相关信息。\n\n建议添加的知识库内容：\n- 艾拉的关键经历（丢猫、被医生救、弟弟发烧）\n- 认知标签（雨→焦虑、医生→信任、火→恐惧）\n- 关系网（李医生、弟弟）"
+  },
+  "show_debug_log": {
+    "description": "显示完整调试日志（包含所有层的详细信息）",
+    "type": "bool",
+    "default": false
+  },
+  "show_kb_log": {
+    "description": "显示知识库使用日志",
+    "type": "bool",
+    "default": true
+  }
+}

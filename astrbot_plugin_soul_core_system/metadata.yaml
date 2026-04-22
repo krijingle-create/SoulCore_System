@@ -1,0 +1,9 @@
+# AstrBot Plugin Metadata
+name: astrbot_plugin_soul_core_system
+display_name: 魂枢系统
+desc: 魂枢系统（Soul Core System）——双层意识架构角色扮演框架。主意识（身份/风格/边界）与潜意识（情绪调制）以及AstrBot自带知识库功能共同决定角色对话。支持多角色切换、模型分离、情绪触发与调制。角色配置通过 WebUI 配置，知识库由 AstrBot 内置知识库功能提供。
+version: 0.2.0
+author: ""
+repo: ""
+support_platforms: []
+astrbot_version: ">=4.22.3"
